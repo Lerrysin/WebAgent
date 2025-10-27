@@ -39,3 +39,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 >>>>>>> b28f7ed (add live2D)
+
+
+# Update Records
+27/10/2025 --added the live2d

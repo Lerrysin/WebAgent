@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import ChatFloating from "../components/ChatFloating";
 import Live2D from "../components/Live2D";
+import MusicPlayer from "../components/MusicPlayer";
 
 
 export default function Page() {
@@ -18,6 +19,8 @@ export default function Page() {
         overflow: "hidden",
       }}
     >
+      <MusicPlayer/>
+
       <div
         aria-hidden
         style={{
@@ -50,7 +53,7 @@ export default function Page() {
         >
           <div
             style={{
-              width: "clamp(260px, 60vw, 560px)",
+              width: "clamp(260px, 120vw, 560px)",
               aspectRatio: "1 / 1",
               display: "flex",
               alignItems: "center",

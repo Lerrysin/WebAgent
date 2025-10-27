@@ -2,37 +2,98 @@
 import React, { useRef, useState } from "react";
 
 type Message = { id: string; role: "user" | "assistant"; content: string };
-type Props = { onTalking?: (talking: boolean) => void; style?: React.CSSProperties };
+type Props = {
+  onTalking?: (talking: boolean) => void;
+  style?: React.CSSProperties;
+  model?: string; // 可保留从外部固定传入，例如 "Claude-Sonnet-4"
+  systemPrompt?: string;
+};
 
-export default function ChatFloating({ onTalking, style }: Props) {
+export default function ChatFloating({
+  onTalking,
+  style,
+  model = "GPT-5",
+  systemPrompt = "You are a travel agent. Be descriptive and helpful.",
+}: Props) {
   const [input, setInput] = useState("");
   const [msgs, setMsgs] = useState<Message[]>([]);
   const listRef = useRef<HTMLDivElement>(null);
+  const sendingRef = useRef(false);
+
+  function scrollToBottom() {
+    const el = listRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }
 
   async function send() {
     const text = input.trim();
-    if (!text) return;
-    setInput("");
-    setMsgs((m) => [...m, { id: crypto.randomUUID(), role: "user", content: text }]);
+    if (!text || sendingRef.current) return;
+
+    const userId = crypto.randomUUID();
     const replyId = crypto.randomUUID();
-    setMsgs((m) => [...m, { id: replyId, role: "assistant", content: "" }]);
+
+    setInput("");
+    setMsgs((m) => [
+      ...m,
+      { id: userId, role: "user", content: text },
+      { id: replyId, role: "assistant", content: "" },
+    ]);
+
     onTalking?.(true);
+    sendingRef.current = true;
+
     try {
-      const fake = "示例回复。这里以后接入 /api/chat 的流式结果。";
-      for (const ch of fake) {
-        await new Promise((r) => setTimeout(r, 18));
-        setMsgs((m) => m.map((x) => (x.id === replyId ? { ...x, content: x.content + ch } : x)));
-        listRef.current && (listRef.current.scrollTop = listRef.current.scrollHeight);
+      // 组织要发给服务端的消息上下文
+      const history = msgs.map((m) => ({ role: m.role, content: m.content }));
+      const body = {
+        model, // 如果你的服务端已经固定模型，可以删掉这一行
+        system: systemPrompt,
+        messages: [...history, { role: "user", content: text }],
+      };
+
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok || !res.body) {
+        const errTxt = await res.text().catch(() => "");
+        throw new Error(errTxt || `HTTP ${res.status}`);
       }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        const chunkText = decoder.decode(value, { stream: true });
+        if (!chunkText) continue;
+
+        setMsgs((m) =>
+          m.map((x) => (x.id === replyId ? { ...x, content: x.content + chunkText } : x))
+        );
+        scrollToBottom();
+      }
+    } catch (err: any) {
+      const msg = err?.message || "请求失败，请稍后重试。";
+      setMsgs((m) =>
+        m.map((x) =>
+          x.id === replyId ? { ...x, content: `出错：${msg}` } : x
+        )
+      );
     } finally {
+      sendingRef.current = false;
       onTalking?.(false);
+      requestAnimationFrame(scrollToBottom);
     }
   }
 
   return (
     <div
       style={{
-        ...style,               // 由父级传入 width/maxHeight/height
+        ...style,
         display: "flex",
         flexDirection: "column",
         background: "rgba(255,255,255,0.9)",
@@ -44,18 +105,21 @@ export default function ChatFloating({ onTalking, style }: Props) {
         pointerEvents: "auto",
       }}
     >
+      {/* 消息列表 */}
       <div
         ref={listRef}
         style={{
           padding: 12,
           overflowY: "auto",
-          flex: 1,              // 让消息区占满除了输入区之外的所有高度
-          minHeight: 200,       // 可选：避免极小高度
+          flex: 1,
+          minHeight: 200,
         }}
       >
         {msgs.map((m) => (
           <div key={m.id} style={{ margin: "10px 0" }}>
-            <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>{m.role}</div>
+            <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>
+              {m.role === "user" ? "你" : "Catty"}
+            </div>
             <div
               style={{
                 background: m.role === "user" ? "#e5f0ff" : "#f5f7fb",
@@ -72,12 +136,13 @@ export default function ChatFloating({ onTalking, style }: Props) {
         ))}
       </div>
 
+      {/* 输入区 */}
       <div style={{ padding: 8, display: "flex", gap: 8, borderTop: "1px solid #e5e7eb" }}>
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && send()}
-          placeholder="输入消息..."
+          placeholder="对 Catty 说点什么吧…"
           style={{
             flex: 1,
             padding: "10px 12px",
@@ -89,13 +154,14 @@ export default function ChatFloating({ onTalking, style }: Props) {
         />
         <button
           onClick={send}
+          disabled={!input.trim() || sendingRef.current}
           style={{
             padding: "10px 14px",
             borderRadius: 8,
-            background: "#2563eb",
+            background: sendingRef.current ? "#94a3b8" : "#2563eb",
             color: "#fff",
             border: "none",
-            cursor: "pointer",
+            cursor: sendingRef.current ? "not-allowed" : "pointer",
           }}
         >
           发送
