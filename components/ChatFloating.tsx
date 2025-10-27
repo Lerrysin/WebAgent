@@ -46,7 +46,7 @@ export default function ChatFloating({
       // 组织要发给服务端的消息上下文
       const history = msgs.map((m) => ({ role: m.role, content: m.content }));
       const body = {
-        model, // 如果你的服务端已经固定模型，可以删掉这一行
+        // model, 
         system: systemPrompt,
         messages: [...history, { role: "user", content: text }],
       };
