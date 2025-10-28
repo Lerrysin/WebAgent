@@ -1,10 +1,8 @@
-<<<<<<< HEAD
 # WebAgent
-A web agent
-=======
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 # Project structure
+```bash
 WebAgent/
 ├─ app/
 │  ├─ ......
@@ -12,12 +10,12 @@ WebAgent/
 │
 │  └─ api/
 │     └─ chat/
-│        └─ route.ts   # POE API, pet personality profile 
+│        └─ route.ts   # POE API, pet personality profile
 │
 ├─ components/
 │  ├─ ChatFloating.tsx # Communication Window
 │  ├─ Live2D.tsx       # Live2D Components
-│  └─ MusicPlayer.tsx  # Backgroun Music Player
+│  └─ MusicPlayer.tsx  # Background Music Player
 │
 ├─ public/             # Resource Files
 │  ├─ bg.png
@@ -31,8 +29,8 @@ WebAgent/
 │     └─ tororo/
 │
 └─ src/
-   └─ live2d/          # Dependence of Live2D
-
+   └─ live2d/          # Dependency of Live2D
+```
 
 ## Getting Started
 
@@ -68,7 +66,6 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
->>>>>>> b28f7ed (add live2D)
 
 
 # Update Records
