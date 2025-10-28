@@ -6,30 +6,27 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 WebAgent/
 ├─ app/
 │  ├─ ......
-│  └─ page.tsx         # Main Pages
+│  └─ page.tsx           # Main Pages
 │
 │  └─ api/
 │     └─ chat/
-│        └─ route.ts   # POE API, pet personality profile
+│        └─ route.ts     # POE API, pet personality profile
 │
 ├─ components/
-│  ├─ ChatFloating.tsx # Communication Window
-│  ├─ Live2D.tsx       # Live2D Components
-│  └─ MusicPlayer.tsx  # Background Music Player
+│  ├─ ChatFloating.tsx   # Communication Window
+│  ├─ Live2D.tsx         # Live2D Components
+│  └─ MusicPlayer.tsx    # Background Music Player
 │
-├─ public/             # Resource Files
-│  ├─ bg.png
-│  ├─ bg2.jpg
-│  ├─ bg3.png
-│  ├─ bgm.m4a
-│  ├─ bgm.mp3
+├─ public/               # Resource Files
+│  ├─ bg.png             # Background Photo
+│  ├─ bgm.m4a            # Background Music
 │  ├─ ......
 │
-│  └─ models/          # Live2D models
+│  └─ models/            # Live2D models
 │     └─ tororo/
 │
 └─ src/
-   └─ live2d/          # Dependency of Live2D
+   └─ live2d/            # Dependency of Live2D
 ```
 
 ## Getting Started
