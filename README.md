@@ -4,6 +4,36 @@ A web agent
 =======
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+# Project structure
+WebAgent/
+├─ app/
+│  ├─ ......
+│  └─ page.tsx         # Main Pages
+│
+│  └─ api/
+│     └─ chat/
+│        └─ route.ts   # POE API, pet personality profile 
+│
+├─ components/
+│  ├─ ChatFloating.tsx # Communication Window
+│  ├─ Live2D.tsx       # Live2D Components
+│  └─ MusicPlayer.tsx  # Backgroun Music Player
+│
+├─ public/             # Resource Files
+│  ├─ bg.png
+│  ├─ bg2.jpg
+│  ├─ bg3.png
+│  ├─ bgm.m4a
+│  ├─ bgm.mp3
+│  ├─ ......
+│
+│  └─ models/          # Live2D models
+│     └─ tororo/
+│
+└─ src/
+   └─ live2d/          # Dependence of Live2D
+
+
 ## Getting Started
 
 First, run the development server:
@@ -43,3 +73,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 # Update Records
 27/10/2025 --added the live2d
+

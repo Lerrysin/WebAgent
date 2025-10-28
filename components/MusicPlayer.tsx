@@ -4,12 +4,13 @@ import { useEffect } from "react";
 
 export default function MusicPlayer() {
   useEffect(() => {
-    // 尝试选择更可播的格式（m4a 不稳时用 mp3 兜底，可省略）
+    // 尝试选择更可播的格式（m4a 不稳时用 mp3 兜底）
     const probe = new Audio();
-    const canM4a =
-      probe.canPlayType("audio/mp4; codecs='mp4a.40.2'") ||
-      probe.canPlayType("audio/aac");
-    const src = canM4a ? "/bgm.m4a" : "/bgm.mp3";
+    // const canM4a =
+    //   probe.canPlayType("audio/mp4; codecs='mp4a.40.2'") ||
+    //   probe.canPlayType("audio/aac");
+    // const src = canM4a ? "/bgm.m4a" : "/bgm.mp3";
+    const src = "/bgm.m4a";
 
     const a = document.createElement("audio");
     a.src = src;
@@ -18,7 +19,7 @@ export default function MusicPlayer() {
     a.setAttribute("playsinline", "true");
     // 关键：静音自动起播，然后立即尝试取消静音并设置目标音量
     a.muted = true;
-    a.volume = 0.18; // 固定音量（可按需调整）
+    a.volume = 0.5; // 固定音量（可按需调整）
 
     // 将元素加入文档，提升某些环境的稳定性
     const holder = document.createElement("div");

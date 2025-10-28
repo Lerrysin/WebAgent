@@ -12,7 +12,7 @@ type Props = {
 export default function ChatFloating({
   onTalking,
   style,
-  model = "GPT-5",
+  // model = "Claude-Sonnet-4",
   systemPrompt = "You are a travel agent. Be descriptive and helpful.",
 }: Props) {
   const [input, setInput] = useState("");

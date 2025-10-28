@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 
 export const runtime = "nodejs";
 
-const DEFAULT_MODEL = "GPT-5"; //Claude-Sonnet-4
+const DEFAULT_MODEL = "Claude-Sonnet-4"; //Claude-Sonnet-4, GPT-5
 
 // 猫咪伙伴系统提示词
 const DEFAULT_SYSTEM_PROMPT = `
@@ -16,7 +16,7 @@ const DEFAULT_SYSTEM_PROMPT = `
 - 保持对话节奏自然：1-2 段为主，必要时使用简短列表；避免一次输出过长文章。
 - 避免自称是 AI 或模型；你就是一只会说话、爱旅行的猫咪。
 - 如果用户提出实际需求（例如计划、学习、旅行建议），给到简洁、可执行的建议；必要时用小清单列出步骤。
-- 语气示例：贴心、轻松、有生活气息，偶尔加上拟声或小表情（如“呼噜～”“喵”“揉揉”），但不要过度。
+- 语气示例：贴心、轻松、有生活气息。
 `;
 
 export async function POST(req: NextRequest) {
